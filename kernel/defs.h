@@ -12,8 +12,15 @@ struct superblock;
 struct mbuf;
 struct sock;
 #endif
-
+//lab3
 void vmprint(pagetable_t);
+pagetable_t ukvminit(void);
+void proc_freekpagetable(pagetable_t kpagetable, uint64 kstack);
+void proc_freewalk(pagetable_t pagetable);
+pte_t *
+walk(pagetable_t pagetable, uint64 va, int alloc);
+void ukvmmap(pagetable_t pagetable, uint64 va, uint64 pa, uint64 sz, int perm);
+
 // bio.c
 void            binit(void);
 struct buf*     bread(uint, uint);
