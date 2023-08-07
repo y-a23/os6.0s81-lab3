@@ -264,6 +264,8 @@ userinit(void)
   uvminit(p->pagetable, initcode, sizeof(initcode));
   p->sz = PGSIZE;
 
+  //lab3
+  u2kcopy(p->pagetable,p->kpagetable,0,PGSIZE);
   // prepare for the very first "return" from kernel to user.
   p->trapframe->epc = 0;      // user program counter
   p->trapframe->sp = PGSIZE;  // user stack pointer
@@ -338,6 +340,7 @@ fork(void)
 
   np->state = RUNNABLE;
 
+  u2kcopy(np->pagetable, np->kpagetable,0,np->sz);
   release(&np->lock);
 
   return pid;

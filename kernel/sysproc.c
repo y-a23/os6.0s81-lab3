@@ -44,11 +44,32 @@ sys_sbrk(void)
   int addr;
   int n;
 
+  //lab3
+  uint64 oldsz=myproc()->sz;
   if(argint(0, &n) < 0)
     return -1;
   addr = myproc()->sz;
   if(growproc(n) < 0)
     return -1;
+  
+  if(PGROUNDUP(addr)>=PLIC)return -1;
+  if(n>0)
+  {
+    u2kcopy(myproc()->pagetable,myproc()->kpagetable,oldsz, myproc()->sz);
+  }
+  else if(n<0)
+  {
+    
+    uvmunmap(myproc()->kpagetable,PGROUNDUP(myproc()->sz),
+      (PGROUNDUP(oldsz)- PGROUNDUP(myproc()->sz))/PGSIZE,0);
+    // //method2
+    //  for(int i=addr - PGSIZE;i>=addr + n;i-=PGSIZE)
+    //  {
+    //    uvmunmap(myproc()->kpagetable,i,1,0);
+    //  }
+  }
+  //if(PGROUNDUP(oldsz+n)!=myproc()->sz)printf("what fuck\n");
+
   return addr;
 }
 

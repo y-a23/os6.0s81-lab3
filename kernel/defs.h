@@ -20,6 +20,11 @@ void proc_freewalk(pagetable_t pagetable);
 pte_t *
 walk(pagetable_t pagetable, uint64 va, int alloc);
 void ukvmmap(pagetable_t pagetable, uint64 va, uint64 pa, uint64 sz, int perm);
+void u2kcopy(pagetable_t upagetable, pagetable_t kpagetable, uint64 oldsz, uint64 newsz);
+int
+copyin_new(pagetable_t pagetable, char *dst, uint64 srcva, uint64 len);
+int
+copyinstr_new(pagetable_t pagetable, char *dst, uint64 srcva, uint64 max);
 
 // bio.c
 void            binit(void);
